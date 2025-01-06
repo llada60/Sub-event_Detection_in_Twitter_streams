@@ -4,11 +4,11 @@
 
 CSC_51054_EP - Machine and Deep Learning, Fall 2024
 
-Team Members: Ziyi LIU, Yixing YANG, Ling LIU
+Team LLY
+Members: Ziyi LIU, Ling LIU, Yixing YANG
 
 Competition link: [Sub-event Detection in Twitter streams](https://www.kaggle.com/t/946c29c13d024ffcad34ab0b40e85688)
-
-***Due date: 2024-12-12***
+**Rank 1st in the competition.**
 
 ## Introduction
 
