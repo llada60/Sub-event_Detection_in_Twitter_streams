@@ -1,90 +1,105 @@
-# Sub-event_Detection_in_Twitter_streams
+# Sub-event Detection in Twitter Streams
+
+[//]: # (The badges)
+[![stars](https://img.shields.io/github/stars/llada60/Sub-event_Detection_in_Twitter_streams?style=social)]()
+[![license](https://img.shields.io/github/license/llada60/Sub-event_Detection_in_Twitter_streams)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![Kaggle](https://img.shields.io/badge/Kaggle-Sub--event%20Detection%20in%20Twitter%20Streams-blue?logo=kaggle)](https://www.kaggle.com/competitions/sub-event-detection-in-twitter-streams)
+
+---
+CSC_51054_EP Machine and Deep Learning, Fall 2024
+
+Team LLY Members: **_Ziyi LIU, Ling LIU, Yixing YANG_**
 
 ---
 
-CSC_51054_EP - Machine and Deep Learning, Fall 2024
+This repository contains the code for the Kaggle
+competition: [Sub-event Detection in Twitter streams](https://www.kaggle.com/competitions/sub-event-detection-in-twitter-streams).
 
-Team LLY
-Members: Ziyi LIU, Ling LIU, Yixing YANG
+Our team, "LLY", achieved **_1st place on the private leaderboard and 12th place on the public leaderboard_**.
 
-Competition link: [Sub-event Detection in Twitter streams](https://www.kaggle.com/t/946c29c13d024ffcad34ab0b40e85688)
-**Rank 1st in the competition.**
+## Project Goal
 
-## Introduction
+The goal of this project is to detect sub-events within Twitter streams related to specific main events. This involves
+processing tweets to identify and classify event-related information.
 
-Project Structure
+## File Structure
+
 ```
-sub-event-data/
-├── data/
-│    └── challenge_data/
-│         ├── baseline.py
-│         ├── dummy_predictions.csv
-│         ├── eval_tweets/
-│         │    └── *.csv
-│         ├── logistic_predictions.csv
-│         └── train_tweets/
-│             └── *.csv
-├── models/
-├── README.md
-├── report/
-├── requirements.txt
-└── sample.ipynb
+.
+├── data/                     # Contains raw and processed datasets (ignored by .gitignore)
+│   └── challenge_data/
+├── src/
+│   ├── data.py               # Advanced data preprocessing and embedding generation
+│   └── model.py              # RNN model implementation
+├── challenge_data.py         # Initial script for data loading and basic preprocessing
+├── cnn.ipynb                 # Jupyter notebook for CNN model experimentation
+├── lstm.ipynb                # Jupyter notebook for LSTM model experimentation
+├── rnn.ipynb                 # Jupyter notebook for RNN model experimentation
+├── machine_learnings.ipynb   # Jupyter notebook for various traditional ML models
+├── Logistic.ipynb            # Jupyter notebook for Logistic Regression model
+├── voting.ipynb              # Jupyter notebook for combining models using a voting classifier
+├── requirements.txt          # Python dependencies
+├── DataChallengeReport.pdf   # Project report
+├── INF554-Challenge-2024.pdf # Competition details
+└── README.md                 # This file
 ```
 
-## Dataset Description
+## Core Logic
 
-The dataset provided includes tweets from World Cup games across the 2010 and 2014 tournaments. It has been split into time periods, where each time period has been annotated with a binary label (0 or 1) indicating whether it contains references to any of the following sub-event types 'full time', 'goal', 'half time', 'kick off', 'other', 'owngoal', 'penalty', 'red card', 'yellow card'.
+### Data Preprocessing
 
-You are given the following files:
+The primary data preprocessing is handled by `src/data.py`, with an initial version in `challenge_data.py`. Key steps
+include:
 
-- train_tweets/*.json: This directory contains all annotated tweets split by their corresponding match. Each file contains tweet data divided into time periods, with each entry labeled as 0 or 1 based on the presence of sub-events.
-- eval_tweets/*.json: This directory contains all tweets that need to be annotated
-- baseline.py: This script contains two simple baselines, a Logistic Regression classifier and a Dummy Classifier that always predicts the most frequent class of the training set. You can use the code provide here as a starting point on how to read and process the data and
-- logistic_predictions.csv and dummy_predictions.csv: sample submission files in the correct format for the two provided baseline classifiers.
+* **Text Cleaning:** Lowercasing, removing URLs, user mentions (while keeping hashtags), punctuation, and numbers.
+* **Language Handling:** Translation of non-English tweets to English and emoji conversion to text.
+* **Normalization:** Unicode normalisation and contraction expansion.
+* **Tokenization, Stopword Removal, and Lemmatization:** Standard NLP techniques to prepare text for modelling.
+* **Parallel Processing:** Utilized for efficient preprocessing of large datasets.
+* **Embedding Generation:** `src/data.py` uses pre-trained GloVe embeddings (glove-twitter-200) to convert tweets into
+  numerical vectors.
 
-The dataset includes the following columns:
+### Models
 
-- **ID:** An identifier which is the combination of the following two IDs
-- **MatchID:** An identifier for each football match.
-- **PeriodID:** An identifier for the time period within the match. Each period is 1 minute long.
-- **EventType:** A binary label indicating the presence (1) or absence (0) of a sub-event in the given time period.
-- **Timestamp:** A Unix timestamp indicating when the tweet was posted.
-- **Tweet:** The text content of the tweet.
+Various models were explored and implemented:
 
-## Task and Evaluation
+* **RNN:** A custom `RNNBinaryClassifier` is defined in `src/model.py` using PyTorch.
+* **CNN, LSTM:** Explored in their respective Jupyter notebooks (`cnn.ipynb`, `lstm.ipynb`).
+* **Traditional Machine Learning Models:** Experiments with models like Logistic Regression are found in
+  `machine_learnings.ipynb` and `Logistic.ipynb`.
+* **Voting Classifier:** A `voting.ipynb` notebook details the combination of different models to improve performance.
 
-For each time period in the test set, your model should predict whether a specific sub-event occurred based on the provided tweet data. The evaluation metric for this competition is accuracy. Accuracy measures the proportion of correct predictions your model makes, calculated by dividing the number of correct predictions by the total number of predictions. For this binary classification task, the accuracy metric is defined as follows:
+## Setup and Usage
 
-$$ \text{Accuracy} = \frac{1}{N} \sum_{i=1}^{N} \mathbb{1}(\hat{y}_i = y_i) $$
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/llada60/Sub-event_Detection_in_Twitter_streams.git
+   cd Sub-event_Detection_in_Twitter_streams
+   ```
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Download Data:** The `data/challenge_data/` directory is excluded by `.gitignore`. You will need to download the
+   competition data from Kaggle and place it in this directory.
+4. **Run Preprocessing:**
+   The `src/data.py` script can be run to perform the full preprocessing pipeline. It saves intermediate and final
+   processed files.
+5. **Explore Notebooks:** The Jupyter notebooks (`*.ipynb`) contain the model training, experimentation, and evaluation
+   logic. Open and run these using Jupyter Lab or Jupyter Notebook.
 
-$$
-\begin{array}{rl}
-where:& \\
-&N: \text{The number of samples in the test set} \\
-&\hat{y}_i: \text{The predicted label for the i-th sample} \\
-&y_i: \text{The true label for the i-th sample} \\
-&\mathbb{1}: \text{The indicator function}
-\end{array}
-$$
+## Key Libraries
 
-## Provided Source Code
+* [PyTorch](https://pytorch.org/)
+* [Gensim](https://radimrehurek.com/gensim/)
+* [NLTK](https://www.nltk.org/)
+* [Pandas](https://pandas.pydata.org/)
+* [NumPy](https://numpy.org/)
+* [Scikit-learn](https://scikit-learn.org/)
+* [Tqdm](https://tqdm.github.io/)
+* [Emoji](https://pypi.org/project/emoji/)
+* [Langdetect](https://pypi.org/project/langdetect/)
+* [Googletrans](https://pypi.org/project/googletrans/)
 
-You are given a Python script `(baseline.py)` to help you get started with the challenge.
-
-The script uses `Glove` vectorization with a `Logistic Regression` classifier to make predictions based on the text content of the tweets. A **Dummy Classifier** based on label frequency is also included.
-
-Your task includes extending and building upon this baseline by experimenting with different features and model architectures to improve performance.
-
-## Useful Python Libraries
-
-This section lists some recommended libraries that you may find helpful during the project:
-
-scikit-learn^1: A powerful library for machine learning in Python, useful for implementing and tuning various classification models.
-
-NLTK^2: The Natural Language Toolkit is invaluable for text processing tasks such as tokenization, stemming, and frequency analysis.
-
-spaCy^3: Another NLP library that offers efficient methods for handling large text corpora, including tokenization and named entity recognition.
-
-Gensim^4: Useful for topic modeling and text representation through word embeddings, which can add valuable context to tweet content.
-
-Hugging Face Transformers^5: A popular library providing pretrained NLP models. You may consider fine-tuning models like BERT for this binary classification task.
+---
