@@ -1,4 +1,4 @@
-# Sub-event Detection in Twitter Streams
+# Sub-event Detection in Twitter Streams - NLP Kaggle Competitition
 
 [//]: # (The badges)
 [![stars](https://img.shields.io/github/stars/llada60/Sub-event_Detection_in_Twitter_streams?style=social)]()
@@ -14,7 +14,7 @@ Team LLY Members: **_Ziyi LIU, Ling LIU, Yixing YANG_**
 ---
 
 This repository contains the code for the Kaggle
-competition: [Sub-event Detection in Twitter streams](https://www.kaggle.com/competitions/sub-event-detection-in-twitter-streams).
+competition: [Sub-event Detection in Twitter streams](https://www.kaggle.com/competitions/sub-event-detection-in-twitter-streams), a binary classification task.
 
 Our team, "LLY", achieved **_1st place on the private leaderboard and 12th place on the public leaderboard_**.
 
